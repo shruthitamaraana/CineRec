@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineRec - Hybrid Recommendation System</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="ai-loader" class="position-fixed top-0 start-0 w-100 h-100 bg-black d-none flex-column align-items-center justify-content-center" style="z-index: 9999;">
+        <div class="spinner-border text-danger mb-4" style="width: 3rem; height: 3rem;" role="status"></div>
+        <h4 class="text-white fw-bold animated-bg-text" id="loader-text">Initializing AI Engine...</h4>
+        <div class="progress mt-3" style="width: 300px; height: 6px; background: #333;">
+            <div class="progress-bar bg-danger" id="loader-bar" style="width: 0%; transition: width 0.3s;"></div>
+        </div>
+    </div>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fas fa-check-circle me-2"></i> Movie added to your Watchlist!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-dark bg-transparent fixed-top p-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold fs-3 text-danger" onclick="showSection('home-section')" style="cursor: pointer;">CineRec.</a>
+            <span class="text-white-50 small d-none d-md-block">Final Year Project Demo</span>
+        </div>
+    </nav>
+
+    <section id="home-section" class="d-block w-100 p-0 m-0 overflow-auto vh-100">
+        
+        <div class="hero-header d-flex align-items-center justify-content-center text-center position-relative">
+            <div class="hero-overlay"></div>
+            <div class="container relative-z">
+                <span class="badge bg-danger mb-3 px-3 py-2 rounded-pill fw-light tracking-wide">AI-POWERED ENGINE</span>
+                <h1 class="display-1 fw-bold mb-3 text-white">Stop Searching.<br><span class="animated-bg-text">Start Watching.</span></h1>
+                <p class="lead text-gray mb-5 mx-auto" style="max-width: 600px;">
+                    CineRec uses a generic hybrid algorithm to analyze your taste profile and match you with hidden gems you actually want to see.
+                </p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <button class="btn btn-danger btn-lg px-5 py-3 rounded-pill fw-bold shadow-glow" onclick="showSection('preferences-section')">
+                        <i class="fas fa-play me-2"></i> Get Recommendations
+                    </button>
+                    <button class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="how-it-works" class="py-5 bg-black">
+            <div class="container py-5">
+                <div class="row text-center mb-5">
+                    <div class="col-12">
+                        <h2 class="display-5 fw-bold mb-3">How CineRec Works</h2>
+                        <p class="text-secondary">Three simple steps to your next favorite movie.</p>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="step-card p-3 rounded-4 bg-dark h-100 border border-secondary border-opacity-25">
+                            <div class="img-wrapper mb-4 rounded-3 overflow-hidden" style="height: 200px;">
+                                <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800" class="w-100 h-100 object-fit-cover">
+                            </div>
+                            <div class="step-icon mb-3 text-danger"><i class="fas fa-sliders-h fa-2x"></i></div>
+                            <h4 class="fw-bold">1. Set Preferences</h4>
+                            <p class="text-secondary small">Tell us your mood. Select genres like Sci-Fi or Drama and set your minimum quality rating.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="step-card p-3 rounded-4 bg-dark h-100 border border-secondary border-opacity-25">
+                            <div class="img-wrapper mb-4 rounded-3 overflow-hidden" style="height: 200px;">
+                                <img src="https://images.unsplash.com/photo-1555421689-d68471e189f2?auto=format&fit=crop&q=80&w=800" class="w-100 h-100 object-fit-cover">
+                            </div>
+                            <div class="step-icon mb-3 text-danger"><i class="fas fa-brain fa-2x"></i></div>
+                            <h4 class="fw-bold">2. AI Analysis</h4>
+                            <p class="text-secondary small">Our hybrid engine cross-references your inputs with thousands of movie metadata points instantly.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="step-card p-3 rounded-4 bg-dark h-100 border border-secondary border-opacity-25">
+                            <div class="img-wrapper mb-4 rounded-3 overflow-hidden" style="height: 200px;">
+                                <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&q=80&w=800" class="w-100 h-100 object-fit-cover">
+                            </div>
+                            <div class="step-icon mb-3 text-danger"><i class="fas fa-ticket-alt fa-2x"></i></div>
+                            <h4 class="fw-bold">3. Watch & Enjoy</h4>
+                            <p class="text-secondary small">Get a curated list of top-tier recommendations with trailers, ratings, and overviews.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="py-5 bg-gradient-dark position-relative overflow-hidden">
+            <div class="container py-5 relative-z">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <span class="text-danger fw-bold text-uppercase ls-2">The Technology</span>
+                        <h2 class="display-4 fw-bold mb-4">Why We Are Unique?</h2>
+                        <h4 class="text-white mb-3">Hybrid Filtering Architecture</h4>
+                        <p class="text-secondary mb-4">
+                            Most apps use simple filtering. CineRec combines two powerful methods:
+                        </p>
+                        <ul class="list-unstyled">
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check-circle text-danger mt-1 me-3"></i>
+                                <div>
+                                    <strong class="text-white">Content-Based Filtering:</strong>
+                                    <span class="d-block text-secondary small">Analyzes movie attributes (Director, Cast, Genre) to find similar matches.</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check-circle text-danger mt-1 me-3"></i>
+                                <div>
+                                    <strong class="text-white">Collaborative Filtering:</strong>
+                                    <span class="d-block text-secondary small">Leverages user behavior patterns to predict what you'll like based on similar users.</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <button class="btn btn-outline-light rounded-pill px-4 mt-3" onclick="showSection('preferences-section')">Try the Algorithm</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=800" class="img-fluid rounded-4 shadow-lg border border-secondary border-opacity-10" alt="AI Technology">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="bg-black py-5 border-top border-secondary border-opacity-25 mt-auto">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <h3 class="fw-bold text-danger mb-3">CineRec.</h3>
+                        <p class="text-secondary small">The ultimate destination for finding your next favorite film using advanced AI.</p>
+                    </div>
+                    <div class="col-md-2 mb-4">
+                        <h6 class="text-white fw-bold mb-3">Project</h6>
+                        <ul class="list-unstyled text-secondary small">
+                            <li class="mb-2"><a href="#" class="text-decoration-none text-secondary">About</a></li>
+                            <li class="mb-2"><a href="#" class="text-decoration-none text-secondary">Algorithm</a></li>
+                            <li class="mb-2"><a href="#" class="text-decoration-none text-secondary">Github Repo</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p class="text-secondary small mb-0">&copy; 2026 CineRec Project. All Rights Reserved.</p>
+                        <p class="text-secondary small">Designed for Final Year Presentation.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section id="preferences-section" class="vh-100 d-none align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card bg-dark-glass p-5 border-0 rounded-4">
+                        <h2 class="text-center mb-4 fw-bold animated-bg-text">Tell Us What You Like</h2>
+                        
+                        <div class="mb-4">
+                            <label class="form-label text-secondary">Select Genres</label>
+                            <div class="d-flex flex-wrap gap-2" id="genre-options">
+                                <button class="btn btn-outline-secondary btn-sm rounded-pill genre-btn" onclick="toggleGenre(this)">Action</button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-pill genre-btn" onclick="toggleGenre(this)">Sci-Fi</button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-pill genre-btn" onclick="toggleGenre(this)">Drama</button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-pill genre-btn" onclick="toggleGenre(this)">Thriller</button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-pill genre-btn" onclick="toggleGenre(this)">Comedy</button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-secondary mb-3">Minimum Rating</label>
+                            <div class="d-flex justify-content-between gap-2" id="rating-options">
+                                <button class="btn btn-outline-dark border-secondary flex-fill py-3 rounded-3 rating-btn" onclick="selectRating(this, 6)">
+                                    <span class="d-block fs-4">6+</span>
+                                    <span class="small text-secondary">Decent</span>
+                                </button>
+                                <button class="btn btn-outline-dark border-secondary flex-fill py-3 rounded-3 rating-btn active" onclick="selectRating(this, 7)">
+                                    <span class="d-block fs-4">7+</span>
+                                    <span class="small text-secondary">Good</span>
+                                </button>
+                                <button class="btn btn-outline-dark border-secondary flex-fill py-3 rounded-3 rating-btn" onclick="selectRating(this, 8)">
+                                    <span class="d-block fs-4 text-warning">8+</span>
+                                    <span class="small text-secondary">Great</span>
+                                </button>
+                                <button class="btn btn-outline-dark border-secondary flex-fill py-3 rounded-3 rating-btn" onclick="selectRating(this, 9)">
+                                    <span class="d-block fs-4 text-danger">9+</span>
+                                    <span class="small text-secondary">Masterpiece</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label text-secondary">Preferred Language</label>
+                            <select class="form-select bg-dark text-light border-secondary" id="languageSelect">
+                                <option value="All" selected>All Languages</option>
+                                <option value="English">English</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Telugu">Telugu</option>
+                                <option value="Spanish">Spanish</option>
+                                <option value="Korean">Korean</option>
+                                <option value="Japanese">Japanese</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-danger w-100 py-3 fw-bold rounded-3 shadow" onclick="generateRecommendations()">Find Movies</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="results-section" class="min-vh-100 py-5 d-none">
+        <div class="container mt-5">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <h2 class="fw-bold animated-bg-text">Top Picks For You</h2>
+                <button class="btn btn-outline-light btn-sm rounded-pill px-4" onclick="showSection('home-section')">Restart</button>
+            </div>
+            
+            <div class="row g-4" id="movie-grid">
+                </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="movieModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title fw-bold" id="modalTitle">Movie Title</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <img id="modalImg" src="" class="img-fluid rounded shadow-lg" alt="Movie Poster">
+                        </div>
+                        <div class="col-md-7 mt-3 mt-md-0">
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <span class="badge bg-warning text-dark fs-6" id="modalRating">★ 8.0</span>
+                                <span class="badge bg-secondary" id="modalLang">English</span>
+                            </div>
+                            <p class="text-secondary small mb-4" id="modalGenre">Action | Sci-Fi</p>
+                            
+                            <h6 class="fw-bold text-danger">Overview</h6>
+                            <p class="text-light small" id="modalDesc">Movie description goes here...</p>
+                            
+                            <div class="mt-4">
+                                <button class="btn btn-danger rounded-pill px-4 me-2" onclick="watchTrailer()"><i class="fas fa-play me-2"></i> Watch Trailer</button>
+                                <button class="btn btn-outline-light rounded-pill px-4" onclick="addToList()"><i class="fas fa-plus me-2"></i> Add to List</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
